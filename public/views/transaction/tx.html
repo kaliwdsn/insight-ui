@@ -170,8 +170,20 @@
           <div style="padding-left: 0.7em; padding-bottom: 2em; word-wrap:break-word" data-ng-class="{true: 'v_highlight', false: ''}[from_vout == true && v_index == vout.n]">
               <p class="small">
                 <strong translate>Type</strong>
-                <span class="text-muted">{{vout.scriptPubKey.type}}</span>
+                <span class="text-muted">{{vout.scriptPubKey.type || vout.scriptPubKey.customData.asset.action}}</span>
               </p>
+              <p class="small" data-ng-show="vout.scriptPubKey.customData.asset">
+                <strong translate>Asset Name</strong>
+                <span class="text-muted">{{ vout.scriptPubKey.customData.asset.assetName}} </span>
+              </p>
+              <p class="small" data-ng-show="vout.scriptPubKey.customData.asset">
+                <strong translate>Asset Id</strong>
+                <span class="text-muted">{{ vout.scriptPubKey.customData.asset.assetId}} </span>
+              </p>
+            <p class="small" data-ng-show="vout.scriptPubKey.customData.asset">
+              <strong translate>Asset Amount</strong>
+              <span class="text-muted">{{ vout.scriptPubKey.customData.asset.amount}} </span>
+            </p>
               <div class="small">
                 <p><strong>scriptPubKey</strong></p>
                 <span class="col-md-11 text-muted ellipsis">{{vout.scriptPubKey.asm}}</span>

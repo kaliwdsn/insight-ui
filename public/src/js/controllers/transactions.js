@@ -20,7 +20,6 @@ function($scope, $rootScope, $routeParams, $location, Global, Transaction, Trans
     var u = 0;
 
     for(var i=0; i < l; i++) {
-
       var notAddr = false;
       // non standard input
       if (items[i].scriptSig && !items[i].addr) {
@@ -53,6 +52,7 @@ function($scope, $rootScope, $routeParams, $location, Global, Transaction, Trans
         tmp[addr].items = [];
       }
       tmp[addr].isSpent = items[i].spentTxId;
+      tmp[addr].customData = items[i].scriptPubKey && items[i].scriptPubKey.customData || null;
 
       tmp[addr].doubleSpentTxID = tmp[addr].doubleSpentTxID   || items[i].doubleSpentTxID;
       tmp[addr].doubleSpentIndex = tmp[addr].doubleSpentIndex || items[i].doubleSpentIndex;
