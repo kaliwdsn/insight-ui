@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('insight.transactions').controller('transactionsController',
-function($scope, $rootScope, $routeParams, $location, Global, Transaction, TransactionsByBlock, TransactionsByAddress) {
+function($scope, $rootScope, $routeParams, $location, Global, Transaction, TransactionsByBlock, TransactionsByAddress, Asset) {
   $scope.global = Global;
   $scope.loading = false;
   $scope.loadedBy = null;
@@ -79,6 +79,36 @@ function($scope, $rootScope, $routeParams, $location, Global, Transaction, Trans
     tx.voutSimple = _aggregateItems(tx.vout);
   };
 
+  var _processTXAssets = function(tx) {
+    tx.vin.forEach(function(vin, index) {
+      if (vin.assets && vin.assets.length > 0) {
+        vin.assets.forEach(function(asset, assetIndex) {
+          Asset.get({
+            assetId : asset.assetId,
+            utxo: vin.txid + ':' + vin.vout
+          }, function(data) {
+            tx.vin[index].assets[assetIndex].metadata = data;
+            tx.vinSimple = _aggregateItems(tx.vin);
+          })
+        });
+      }
+    });
+
+    tx.vout.forEach(function(vout, index) {
+      if (vout.assets && vout.assets.length > 0) {
+        vout.assets.forEach(function(asset, assetIndex) {
+          Asset.get({
+            assetId : asset.assetId,
+            utxo : tx.txid + ':' + vout.n
+          }, function (data) {
+            tx.vout[index].assets[assetIndex].metadata = data;
+            tx.voutSimple = _aggregateItems(tx.vout);
+          });
+        });
+      }
+    });
+  }
+
   var _paginate = function(data) {
     $scope.loading = false;
 
@@ -117,6 +147,7 @@ function($scope, $rootScope, $routeParams, $location, Global, Transaction, Trans
       $rootScope.flashMessage = null;
       $scope.tx = tx;
       _processTX(tx);
+      _processTXAssets(tx);
       $scope.txs.unshift(tx);
     }, function(e) {
       if (e.status === 400) {

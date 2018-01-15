@@ -18,6 +18,7 @@ angular.module('insight',[
   'insight.api',
   'insight.blocks',
   'insight.transactions',
+  'insight.assets',
   'insight.address',
   'insight.search',
   'insight.status',
@@ -31,6 +32,7 @@ angular.module('insight.socket', []);
 angular.module('insight.api', []);
 angular.module('insight.blocks', []);
 angular.module('insight.transactions', []);
+angular.module('insight.assets', []);
 angular.module('insight.address', []);
 angular.module('insight.search', []);
 angular.module('insight.status', []);
