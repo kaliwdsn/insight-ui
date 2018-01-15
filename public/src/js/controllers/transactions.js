@@ -53,6 +53,7 @@ function($scope, $rootScope, $routeParams, $location, Global, Transaction, Trans
       }
       tmp[addr].isSpent = items[i].spentTxId;
       tmp[addr].customData = items[i].scriptPubKey && items[i].scriptPubKey.customData || null;
+      tmp[addr].assets = items[i].assets;
 
       tmp[addr].doubleSpentTxID = tmp[addr].doubleSpentTxID   || items[i].doubleSpentTxID;
       tmp[addr].doubleSpentIndex = tmp[addr].doubleSpentIndex || items[i].doubleSpentIndex;
